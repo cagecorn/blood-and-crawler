@@ -1,7 +1,7 @@
 import { Scene } from 'phaser';
-import { gameStateManager, GameStates } from './GameStateManager';
-import { MeasurementManager } from '../../MeasurementManager';
-import { debugLogManager } from '../../utils/DebugLogManager';
+import { gameStateManager, GameStates } from './GameStateManager.js';
+import { MeasurementManager } from '../../MeasurementManager.js';
+import { debugLogManager } from '../../utils/DebugLogManager.js';
 
 export class CombatState extends Scene {
   constructor() {

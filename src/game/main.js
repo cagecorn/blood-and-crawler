@@ -1,13 +1,13 @@
-import { Boot } from './scenes/Boot';
-import { GameOver } from './scenes/GameOver';
-import { MainMenu } from './scenes/MainMenu';
-import { Preloader } from './scenes/Preloader';
-import { DungeonExplorationState } from './states/DungeonExplorationState';
-import { CombatState } from './states/CombatState';
-import { gameStateManager } from './states/GameStateManager';
+import { Boot } from './scenes/Boot.js';
+import { GameOver } from './scenes/GameOver.js';
+import { MainMenu } from './scenes/MainMenu.js';
+import { Preloader } from './scenes/Preloader.js';
+import { DungeonExplorationState } from './states/DungeonExplorationState.js';
+import { CombatState } from './states/CombatState.js';
+import { gameStateManager } from './states/GameStateManager.js';
 import { AUTO, Game } from 'phaser';
-import { MeasurementManager } from '../MeasurementManager';
-import { debugLogManager } from '../utils/DebugLogManager';
+import { MeasurementManager } from '../MeasurementManager.js';
+import { debugLogManager } from '../utils/DebugLogManager.js';
 
 const config = {
     type: AUTO,

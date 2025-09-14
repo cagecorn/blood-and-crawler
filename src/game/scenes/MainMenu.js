@@ -1,6 +1,6 @@
 import { Scene } from 'phaser';
-import { gameStateManager, GameStates } from '../states/GameStateManager';
-import { MeasurementManager } from '../../MeasurementManager';
+import { gameStateManager, GameStates } from '../states/GameStateManager.js';
+import { MeasurementManager } from '../../MeasurementManager.js';
 
 export class MainMenu extends Scene
 {
