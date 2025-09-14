@@ -7,6 +7,7 @@ import { CombatState } from './states/CombatState';
 import { gameStateManager } from './states/GameStateManager';
 import { AUTO, Game } from 'phaser';
 import { MeasurementManager } from '../MeasurementManager';
+import { debugLogManager } from '../utils/DebugLogManager';
 
 const config = {
     type: AUTO,
@@ -29,8 +30,10 @@ const config = {
 };
 
 const StartGame = (parent) => {
+    debugLogManager.init(import.meta.env?.DEV);
     const game = new Game({ ...config, parent });
     gameStateManager.init(game);
+    debugLogManager.log('Game initialized', { parent });
     return game;
 }
 
