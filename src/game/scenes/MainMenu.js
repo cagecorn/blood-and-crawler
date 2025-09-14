@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { gameStateManager, GameStates } from '../states/GameStateManager';
+import { MeasurementManager } from '../../MeasurementManager';
 
 export class MainMenu extends Scene
 {
@@ -10,13 +11,15 @@ export class MainMenu extends Scene
 
     create ()
     {
-        this.add.image(512, 384, 'background');
+        const { centerX, centerY, mainMenu } = MeasurementManager;
 
-        this.add.image(512, 300, 'logo');
+        this.add.image(centerX, centerY, 'background');
 
-        this.add.text(512, 460, 'Main Menu', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
+        this.add.image(centerX, centerY + mainMenu.logoOffsetY, 'logo');
+
+        this.add.text(centerX, centerY + mainMenu.titleOffsetY, 'Main Menu', {
+            fontFamily: 'Arial Black', fontSize: MeasurementManager.fontSizes.mainMenuTitle, color: '#ffffff',
+            stroke: '#000000', strokeThickness: MeasurementManager.strokeThickness,
             align: 'center'
         }).setOrigin(0.5);
 

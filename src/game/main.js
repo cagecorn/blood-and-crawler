@@ -6,11 +6,12 @@ import { DungeonExplorationState } from './states/DungeonExplorationState';
 import { CombatState } from './states/CombatState';
 import { gameStateManager } from './states/GameStateManager';
 import { AUTO, Game } from 'phaser';
+import { MeasurementManager } from '../MeasurementManager';
 
 const config = {
     type: AUTO,
-    width: 1024,
-    height: 768,
+    width: MeasurementManager.screenWidth,
+    height: MeasurementManager.screenHeight,
     parent: 'game-container',
     backgroundColor: '#028af8',
     scale: {
