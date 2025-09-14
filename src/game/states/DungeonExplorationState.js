@@ -1,8 +1,8 @@
 import { Scene } from 'phaser';
-import { gameStateManager, GameStates } from './GameStateManager';
-import { Entity, PositionComponent, StatsComponent } from '../../ecs';
-import { MeasurementManager } from '../../MeasurementManager';
-import { debugLogManager } from '../../utils/DebugLogManager';
+import { gameStateManager, GameStates } from './GameStateManager.js';
+import { Entity, PositionComponent, StatsComponent } from '../../ecs/index.js';
+import { MeasurementManager } from '../../MeasurementManager.js';
+import { debugLogManager } from '../../utils/DebugLogManager.js';
 import { generateDungeon } from '../../features/dungeon/recursiveBacktrackingGenerator.js';
 
 export class DungeonExplorationState extends Scene {

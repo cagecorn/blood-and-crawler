@@ -1,4 +1,4 @@
-import { debugLogManager } from '../../utils/DebugLogManager';
+import { debugLogManager } from '../../utils/DebugLogManager.js';
 
 export const GameStates = {
   DUNGEON: 'DungeonExplorationState',

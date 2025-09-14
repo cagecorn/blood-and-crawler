@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { MeasurementManager } from '../../MeasurementManager';
+import { MeasurementManager } from '../../MeasurementManager.js';
 
 export class GameOver extends Scene
 {
