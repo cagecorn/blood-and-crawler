@@ -3,6 +3,7 @@ import { gameStateManager, GameStates } from './GameStateManager';
 import { Entity, PositionComponent, StatsComponent } from '../../ecs';
 import { MeasurementManager } from '../../MeasurementManager';
 import { debugLogManager } from '../../utils/DebugLogManager';
+import { generateDungeon } from '../../features/dungeon/recursiveBacktrackingGenerator.js';
 
 export class DungeonExplorationState extends Scene {
   constructor() {
@@ -18,14 +19,23 @@ export class DungeonExplorationState extends Scene {
       id: this.player.id,
       stats: this.player.getComponent(StatsComponent)
     });
+    const dungeon = generateDungeon(21, 21);
+    const tileSize = 32;
+    const offsetX = (MeasurementManager.screenWidth - dungeon[0].length * tileSize) / 2;
+    const offsetY = (MeasurementManager.screenHeight - dungeon.length * tileSize) / 2;
 
-    const { centerX, centerY } = MeasurementManager;
-
-    this.add.text(centerX, centerY, 'Dungeon Exploration', {
-      fontFamily: 'Arial',
-      fontSize: MeasurementManager.fontSizes.default,
-      color: '#ffffff'
-    }).setOrigin(0.5);
+    for (let y = 0; y < dungeon.length; y++) {
+      for (let x = 0; x < dungeon[0].length; x++) {
+        const texture = dungeon[y][x] === 1 ? 'dungeonWall' : 'dungeonFloor';
+        this.add
+          .image(
+            offsetX + x * tileSize + tileSize / 2,
+            offsetY + y * tileSize + tileSize / 2,
+            texture
+          )
+          .setDisplaySize(tileSize, tileSize);
+      }
+    }
 
     this.input.once('pointerdown', () => {
       debugLogManager.log('Dungeon pointerdown');

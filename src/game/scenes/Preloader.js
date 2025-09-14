@@ -42,6 +42,8 @@ export class Preloader extends Scene
         this.load.setPath('assets');
 
         this.load.image('logo', 'logo.png');
+        this.load.image('dungeonFloor', 'images/dungeon/tilesets/floor-tile-1.png');
+        this.load.image('dungeonWall', 'images/dungeon/tilesets/wall-tile-1.png');
     }
 
     create ()
