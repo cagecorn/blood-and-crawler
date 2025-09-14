@@ -1,5 +1,6 @@
 import { Scene } from 'phaser';
 import { gameStateManager, GameStates } from './GameStateManager';
+import { MeasurementManager } from '../../MeasurementManager';
 
 export class CombatState extends Scene {
   constructor() {
@@ -7,9 +8,11 @@ export class CombatState extends Scene {
   }
 
   create() {
-    this.add.text(512, 384, 'Combat', {
+    const { centerX, centerY } = MeasurementManager;
+
+    this.add.text(centerX, centerY, 'Combat', {
       fontFamily: 'Arial',
-      fontSize: 24,
+      fontSize: MeasurementManager.fontSizes.default,
       color: '#ffffff'
     }).setOrigin(0.5);
 

@@ -1,6 +1,7 @@
 import { Scene } from 'phaser';
 import { gameStateManager, GameStates } from './GameStateManager';
 import { Entity, PositionComponent, StatsComponent } from '../../ecs';
+import { MeasurementManager } from '../../MeasurementManager';
 
 export class DungeonExplorationState extends Scene {
   constructor() {
@@ -12,9 +13,11 @@ export class DungeonExplorationState extends Scene {
       .addComponent(new PositionComponent(0, 0))
       .addComponent(new StatsComponent(100, 10));
 
-    this.add.text(512, 384, 'Dungeon Exploration', {
+    const { centerX, centerY } = MeasurementManager;
+
+    this.add.text(centerX, centerY, 'Dungeon Exploration', {
       fontFamily: 'Arial',
-      fontSize: 24,
+      fontSize: MeasurementManager.fontSizes.default,
       color: '#ffffff'
     }).setOrigin(0.5);
 

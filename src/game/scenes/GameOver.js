@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { MeasurementManager } from '../../MeasurementManager';
 
 export class GameOver extends Scene
 {
@@ -11,11 +12,13 @@ export class GameOver extends Scene
     {
         this.cameras.main.setBackgroundColor(0xff0000);
 
-        this.add.image(512, 384, 'background').setAlpha(0.5);
+        const { centerX, centerY } = MeasurementManager;
 
-        this.add.text(512, 384, 'Game Over', {
-            fontFamily: 'Arial Black', fontSize: 64, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
+        this.add.image(centerX, centerY, 'background').setAlpha(0.5);
+
+        this.add.text(centerX, centerY, 'Game Over', {
+            fontFamily: 'Arial Black', fontSize: MeasurementManager.fontSizes.gameOverTitle, color: '#ffffff',
+            stroke: '#000000', strokeThickness: MeasurementManager.strokeThickness,
             align: 'center'
         }).setOrigin(0.5);
 
