@@ -1,4 +1,5 @@
 import { Scene } from 'phaser';
+import { gameStateManager, GameStates } from '../states/GameStateManager';
 
 export class MainMenu extends Scene
 {
@@ -20,9 +21,7 @@ export class MainMenu extends Scene
         }).setOrigin(0.5);
 
         this.input.once('pointerdown', () => {
-
-            this.scene.start('Game');
-
+            gameStateManager.changeState(GameStates.DUNGEON);
         });
     }
 }
