@@ -11,7 +11,7 @@ class GameStateManager {
     this.currentState = null;
   }
 
-  changeState(stateKey) {
+  changeState(stateKey, data) {
     if (!this.game) {
       throw new Error('GameStateManager not initialized');
     }
@@ -20,7 +20,7 @@ class GameStateManager {
       to: stateKey
     });
     this.currentState = stateKey;
-    this.game.scene.start(stateKey);
+    this.game.scene.start(stateKey, data);
   }
 }
 
