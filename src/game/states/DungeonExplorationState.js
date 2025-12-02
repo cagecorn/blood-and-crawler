@@ -36,7 +36,7 @@ export class DungeonExplorationState extends Scene {
   }
 
   generateDungeonLayout() {
-    this.dungeon = generateDungeon(21, 21);
+    this.dungeon = generateDungeon(42, 42);
     this.tileSize = 32;
     this.mapWidth = this.dungeon[0].length * this.tileSize;
     this.mapHeight = this.dungeon.length * this.tileSize;
