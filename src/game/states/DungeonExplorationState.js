@@ -1,5 +1,5 @@
 import { Scene } from 'phaser';
-import { gameStateManager, GameStates } from './GameStateManager.js';
+import { GameStates } from './GameStateManager.js';
 import { Entity, PositionComponent, StatsComponent } from '../../ecs/index.js';
 import { MeasurementManager } from '../../MeasurementManager.js';
 import { debugLogManager } from '../../utils/DebugLogManager.js';
@@ -9,9 +9,6 @@ import { PLAYER_MOVED } from '../../events/eventTypes.js';
 import { turnManager } from '../../systems/turnManager.js';
 import { aiSystem } from '../../systems/aiSystem.js';
 import { raycastFOV } from '../../features/fov/index.js';
-import { RandomEncounterController } from '../../features/combat/encounters/RandomEncounterController.js';
-import { createBasePartyRoster } from '../../features/combat/data/partyRoster.js';
-import { DEFAULT_COMBAT_BACKGROUND, getRandomEnemy } from '../../features/combat/data/enemies.js';
 
 export class DungeonExplorationState extends Scene {
   constructor() {
@@ -24,11 +21,9 @@ export class DungeonExplorationState extends Scene {
     this.initializeSystems();
     this.generateDungeonLayout();
     this.createDungeonTiles();
-    this.partyRoster = createBasePartyRoster();
     this.createPlayer();
     this.setupCamera();
     this.setupInputHandlers();
-    this.initializeEncounterSystem();
 
     this.updateFOV();
   }
@@ -64,10 +59,9 @@ export class DungeonExplorationState extends Scene {
 
   createPlayer() {
     const spawnTile = this.findSpawnTile();
-    const leader = this.partyRoster[0];
     this.player = new Entity('player')
       .addComponent(new PositionComponent(spawnTile.x, spawnTile.y))
-      .addComponent(new StatsComponent(leader.currentHp, leader.currentMp));
+      .addComponent(new StatsComponent(100, 10));
 
     this.playerSprite = this.add
       .sprite(0, 0, 'playerWarrior')
@@ -75,59 +69,6 @@ export class DungeonExplorationState extends Scene {
       .setDepth(1);
 
     this.updatePlayerSpritePosition();
-  }
-
-  initializeEncounterSystem() {
-    this.randomEncounterController = new RandomEncounterController({
-      bus: this.bus,
-      encounterChance: 0.2,
-      minimumSteps: 4,
-      onEncounter: () => this.startCombatEncounter(),
-    });
-
-    this.randomEncounterController.start();
-
-    const teardown = () => {
-      this.randomEncounterController?.destroy();
-      this.randomEncounterController = null;
-    };
-
-    this.events.once('shutdown', teardown);
-    this.events.once('destroy', teardown);
-  }
-
-  startCombatEncounter() {
-    this.randomEncounterController?.stop();
-    const encounterData = this.createRandomEncounter();
-    debugLogManager.log('Encounter starting', {
-      enemy: encounterData.enemy.id,
-      background: encounterData.backgroundKey,
-    });
-    gameStateManager.changeState(GameStates.COMBAT, encounterData);
-  }
-
-  createRandomEncounter() {
-    return {
-      encounterType: 'RANDOM',
-      party: this.buildPartySnapshot(),
-      enemy: getRandomEnemy(),
-      backgroundKey: DEFAULT_COMBAT_BACKGROUND,
-    };
-  }
-
-  buildPartySnapshot() {
-    return this.partyRoster.map((member, index) => {
-      if (index === 0) {
-        const stats = this.player.getComponent(StatsComponent);
-        return {
-          ...member,
-          currentHp: stats.hp,
-          currentMp: stats.mp,
-        };
-      }
-
-      return { ...member };
-    });
   }
 
   findSpawnTile() {
