@@ -8,9 +8,6 @@ const BASE_PARTY = [
     currentHp: 120,
     maxMp: 8,
     currentMp: 8,
-    battleRow: 'front',
-    battleColumn: 0,
-    portraitTexture: 'portrait-warrior',
   },
   {
     id: 'brann',
@@ -21,9 +18,6 @@ const BASE_PARTY = [
     currentHp: 95,
     maxMp: 18,
     currentMp: 18,
-    battleRow: 'front',
-    battleColumn: 1,
-    portraitTexture: 'portrait-gunner',
   },
   {
     id: 'celine',
@@ -34,9 +28,6 @@ const BASE_PARTY = [
     currentHp: 70,
     maxMp: 52,
     currentMp: 52,
-    battleRow: 'back',
-    battleColumn: 0,
-    portraitTexture: 'portrait-esper',
   },
   {
     id: 'dorian',
@@ -47,9 +38,6 @@ const BASE_PARTY = [
     currentHp: 88,
     maxMp: 44,
     currentMp: 44,
-    battleRow: 'back',
-    battleColumn: 1,
-    portraitTexture: 'portrait-paladin',
   },
 ];
 

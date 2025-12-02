@@ -4,7 +4,6 @@ import { debugLogManager } from '../../utils/DebugLogManager.js';
 import { CombatUI } from '../../features/combat/ui/CombatUI.js';
 import { createBasePartyRoster } from '../../features/combat/data/partyRoster.js';
 import { DEFAULT_COMBAT_BACKGROUND, getDefaultEnemy } from '../../features/combat/data/enemies.js';
-import { assignUnitsToFormation, formationHasUnits, normalizeFormationStructure } from '../../features/combat/data/formation.js';
 
 export class CombatState extends Scene {
   constructor() {
@@ -30,9 +29,7 @@ export class CombatState extends Scene {
 
     this.combatUI.render({
       party: preparedEncounter.party,
-      partyFormation: preparedEncounter.partyFormation,
       enemy: preparedEncounter.enemy,
-      enemyFormation: preparedEncounter.enemyFormation,
       backgroundKey: preparedEncounter.backgroundKey,
       hint: 'Press ESC to return to exploration',
     });
@@ -42,12 +39,9 @@ export class CombatState extends Scene {
 
   prepareEncounterData(data = {}) {
     const enemy = this.normalizeEnemyData(data.enemy);
-    const partyData = this.normalizePartyData(data.party);
     return {
-      party: partyData.members,
-      partyFormation: partyData.formation,
+      party: this.normalizePartyData(data.party),
       enemy,
-      enemyFormation: enemy.formation,
       backgroundKey: data.backgroundKey ?? enemy.backgroundKey ?? DEFAULT_COMBAT_BACKGROUND,
     };
   }
@@ -57,7 +51,7 @@ export class CombatState extends Scene {
       ? partyData
       : createBasePartyRoster();
 
-    const normalizedMembers = source.map((member) => {
+    return source.map((member) => {
       const maxHp = this.safeNumber(member.maxHp ?? member.hp ?? member.currentHp, 0);
       const currentHp = this.safeNumber(member.currentHp ?? member.hp ?? maxHp, maxHp);
       const maxMp = this.safeNumber(member.maxMp ?? member.mp ?? member.currentMp, 0);
@@ -71,16 +65,8 @@ export class CombatState extends Scene {
         currentHp,
         maxMp,
         currentMp,
-        portraitTexture: member.portraitTexture ?? member.portrait ?? null,
       };
     });
-
-    const { formation, units } = assignUnitsToFormation(normalizedMembers, {
-      mutate: true,
-      defaultRows: ['front', 'front', 'back', 'back'],
-    });
-
-    return { members: units, formation };
   }
 
   normalizeEnemyData(enemyData) {
@@ -88,43 +74,6 @@ export class CombatState extends Scene {
     enemy.maxHp = this.safeNumber(enemy.maxHp ?? enemy.currentHp, 0);
     enemy.currentHp = this.safeNumber(enemy.currentHp ?? enemy.maxHp, enemy.maxHp);
     enemy.level = enemy.level ?? 1;
-    enemy.texture = enemy.texture ?? 'monsterZombie';
-
-    const { formation } = normalizeFormationStructure(enemy.formation, {
-      mapUnit: (unitLike) => {
-        const mapped = { ...unitLike };
-        mapped.name = mapped.name ?? enemy.name ?? 'Enemy';
-        mapped.texture = mapped.texture ?? enemy.texture;
-        mapped.level = mapped.level ?? enemy.level;
-        mapped.maxHp = this.safeNumber(mapped.maxHp ?? mapped.currentHp, enemy.maxHp);
-        mapped.currentHp = this.safeNumber(mapped.currentHp ?? mapped.maxHp, mapped.maxHp);
-        return mapped;
-      },
-    });
-
-    if (!formationHasUnits(formation)) {
-      const duplicateUnits = [
-        { id: `${enemy.id ?? 'enemy'}-front-a`, name: enemy.name },
-        { id: `${enemy.id ?? 'enemy'}-front-b`, name: enemy.name },
-        { id: `${enemy.id ?? 'enemy'}-back-a`, name: enemy.name },
-        { id: `${enemy.id ?? 'enemy'}-back-b`, name: enemy.name },
-      ].map((unit) => ({
-        ...unit,
-        texture: enemy.texture,
-        level: enemy.level,
-        maxHp: enemy.maxHp,
-        currentHp: enemy.currentHp,
-      }));
-
-      const { formation: fallbackFormation } = assignUnitsToFormation(duplicateUnits, {
-        mutate: true,
-      });
-
-      enemy.formation = fallbackFormation;
-    } else {
-      enemy.formation = formation;
-    }
-
     return enemy;
   }
 
